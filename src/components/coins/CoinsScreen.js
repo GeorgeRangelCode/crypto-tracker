@@ -1,7 +1,23 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { Text, View, Pressable, StyleSheet } from "react-native";
+import Http from "../../libs/http";
 
 const CoinsScreen = ({ navigation }) => {
+  const [data, setData] = useState({});
+
+  const getCoins = async () => {
+    const coins = await Http.instance.get(
+      "https://api.coinlore.net/api/tickers/"
+    );
+
+    console.log("coins", coins);
+  };
+
+  useEffect(() => {
+    getCoins();
+  }, []);
+
   const handlePress = () => {
     console.log("object", navigation);
     navigation.navigate("CoinDetail");
