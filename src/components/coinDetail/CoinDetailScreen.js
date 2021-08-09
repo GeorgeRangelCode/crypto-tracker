@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Pressable, Image, SectionList, FlatList, StyleSheet } from "react-native";
+import { View, Text, Pressable, Image, SectionList, FlatList, StyleSheet, Alert } from "react-native";
 import colors from "../../res/colors";
 import Http from "../../libs/http";
 import Storage from "../../libs/storage";
@@ -28,18 +28,56 @@ const CoinDetailScreen = ({ route, navigation }) => {
     }
   };
 
-  const addFavorite = () => {
+  const addFavorite = async () => {
     const coin = JSON.stringify(coinDetail);
     const key = `favorite-${coinDetail.id}`;
-
-    const stored = Storage.instance.store(key, coin);
+    const stored = await Storage.instance.store(key, coin);
 
     if (stored) {
       setIsFavorite(true);
     }
+    setIsFavorite(true);
   };
 
-  const removeFavorite = () => {};
+  const removeFavorite = async () => {
+    Alert.alert("Remove Favorite", "Are you sure?", [
+      {
+        text: "Cancel",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "Remove",
+        onPress: async () => {
+          const key = `favorite-${coinDetail.id}`;
+
+          await Storage.instance.remove(key);
+
+          setIsFavorite(false);
+        },
+        style: "destructive",
+      },
+    ]);
+  };
+
+  const getFavorite = async coin => {
+    try {
+      const key = `favorite-${coin.id}`;
+      const favStr = await Storage.instance.get(key);
+
+      if (favStr !== null) {
+        setIsFavorite(true);
+      }
+    } catch (error) {
+      console.log("get favorites error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    const { coin } = route.params;
+
+    getFavorite(coin);
+  }, []);
 
   const getSections = coin => {
     const sections = [
