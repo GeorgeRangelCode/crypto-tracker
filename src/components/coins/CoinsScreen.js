@@ -29,7 +29,11 @@ const CoinsScreen = ({ navigation }) => {
       {loading ? (
         <ActivityIndicator style={styles.loader} color="#0ff" size="large" />
       ) : (
-        <FlatList data={data} renderItem={({ item }) => <CoinsItem item={item} onPress={() => handlePress(item)} />} />
+        <FlatList
+          keyExtractor={item => `${item.base}-${item.name}-${item.quote}`}
+          data={data}
+          renderItem={({ item }) => <CoinsItem item={item} onPress={() => handlePress(item)} />}
+        />
       )}
     </View>
   );
