@@ -3,16 +3,19 @@ import { useEffect, useState } from "react";
 import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import Http from "../../libs/http";
 import CoinsItem from "./CoinsItem";
+import CoinsSearch from "./CoinsSearch";
 import colors from "../../res/colors";
 
 const CoinsScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getCoins = async () => {
     setLoading(true);
     const coins = await Http.instance.get("https://api.coinlore.net/api/tickers/");
     setData(coins.data);
+    setAllData(coins.data);
     setLoading(false);
   };
 
@@ -24,8 +27,19 @@ const CoinsScreen = ({ navigation }) => {
     navigation.navigate("CoinDetail", { coin });
   };
 
+  const handleSearch = query => {
+    const coinsFiltered = allData.filter(coin => {
+      return (
+        coin.name.toLowerCase().includes(query.toLowerCase()) || coin.symbol.toLowerCase().includes(query.toLowerCase())
+      );
+    });
+
+    setData(coinsFiltered);
+  };
+
   return (
     <View style={styles.container}>
+      <CoinsSearch onChange={handleSearch} />
       {loading ? (
         <ActivityIndicator style={styles.loader} color="#0ff" size="large" />
       ) : (
