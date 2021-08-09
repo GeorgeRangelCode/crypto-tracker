@@ -23,7 +23,7 @@ const App = () => {
           name="Coins"
           component={CoinsStack}
           options={{
-            tabBarLabel: "Coins",
+            headerShown: false,
             tabBarIcon: ({ size, color }) => (
               <Image
                 style={{ tintColor: color, width: size, height: size }}
@@ -36,7 +36,7 @@ const App = () => {
           name="Favorites"
           component={FavoritesStack}
           options={{
-            tabBarLabel: "Coins",
+            headerShown: false,
             tabBarIcon: ({ size, color }) => (
               <Image
                 style={{ tintColor: color, width: size, height: size }}

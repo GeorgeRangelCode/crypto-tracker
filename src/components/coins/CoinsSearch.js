@@ -6,7 +6,6 @@ const CoinsSearch = ({ onChange }) => {
   const [query, setQuery] = useState("");
 
   const handleText = text => {
-    console.log("🚀 ~ file: CoinsSearch.js ~ line 8 ~ CoinsSearch ~ text", text);
     setQuery(text);
 
     if (onChange) {
