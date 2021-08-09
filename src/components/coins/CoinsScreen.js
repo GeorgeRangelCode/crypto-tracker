@@ -11,9 +11,7 @@ const CoinsScreen = ({ navigation }) => {
 
   const getCoins = async () => {
     setLoading(true);
-    const coins = await Http.instance.get(
-      "https://api.coinlore.net/api/tickers/"
-    );
+    const coins = await Http.instance.get("https://api.coinlore.net/api/tickers/");
     setData(coins.data);
     setLoading(false);
   };
@@ -22,15 +20,16 @@ const CoinsScreen = ({ navigation }) => {
     getCoins();
   }, []);
 
+  const handlePress = coin => {
+    navigation.navigate("CoinDetail", { coin });
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator style={styles.loader} color="#0ff" size="large" />
       ) : (
-        <FlatList
-          data={data}
-          renderItem={({ item }) => <CoinsItem item={item} />}
-        />
+        <FlatList data={data} renderItem={({ item }) => <CoinsItem item={item} onPress={() => handlePress(item)} />} />
       )}
     </View>
   );
