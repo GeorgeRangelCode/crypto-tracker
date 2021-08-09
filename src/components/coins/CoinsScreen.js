@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import { View, ActivityIndicator, FlatList, StyleSheet, StatusBar } from "react-native";
 import Http from "../../libs/http";
 import CoinsItem from "./CoinsItem";
 import CoinsSearch from "./CoinsSearch";
@@ -39,6 +39,7 @@ const CoinsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" hidden={false} />
       <CoinsSearch onChange={handleSearch} />
       {loading ? (
         <ActivityIndicator style={styles.loader} color="#0ff" size="large" />
